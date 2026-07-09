@@ -66,7 +66,8 @@ and manage users and leave types.
 ## Environment
 
 - Secrets come from `.env` (git-ignored). Frontend uses `VITE_SUPABASE_URL` and
-  `VITE_SUPABASE_ANON_KEY`. The seed script uses the service_role key locally.
+  `VITE_SUPABASE_PUBLISHABLE_KEY` (Supabase's new `sb_publishable_...` key, safe
+  to expose). The seed script uses the `sb_secret_...` key locally (bypasses RLS).
 
 ## Workflow
 
