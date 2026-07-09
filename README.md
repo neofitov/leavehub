@@ -165,6 +165,7 @@ applied to Supabase and committed here:
 | `…_rls_policies.sql` | RLS enabled + policies on every table |
 | `…_storage.sql` | `avatars` + `attachments` buckets and their policies |
 | `…_security_hardening.sql` | Fixes raised by Supabase's security advisor |
+| `…_fix_avatar_upsert.sql` | Owner-scoped `SELECT` on `avatars`, required by `upsert` |
 
 ---
 
