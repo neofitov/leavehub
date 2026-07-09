@@ -34,6 +34,15 @@ async function loadUserContext(authUser) {
   };
 }
 
+/**
+ * Sign up a new user.
+ *
+ * When email confirmation is enabled, Supabase returns no session — the user
+ * must click the emailed link before they can log in. That is a success, not a
+ * failure, so it is reported via the return value rather than a thrown error.
+ *
+ * @returns {Promise<{needsConfirmation: boolean}>}
+ */
 export async function register({ email, password, fullName }) {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -42,16 +51,12 @@ export async function register({ email, password, fullName }) {
   });
   if (error) throw error;
 
-  // With email confirmation disabled, a session is returned immediately.
-  if (!data.session) {
-    throw new Error(
-      'Account created. Please confirm your email, then log in.'
-    );
-  }
+  if (!data.session) return { needsConfirmation: true };
 
   const user = await loadUserContext(data.user);
   setCurrentUser(user);
   navigate('/dashboard', { replace: true });
+  return { needsConfirmation: false };
 }
 
 export async function login({ email, password }) {

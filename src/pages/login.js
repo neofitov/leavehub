@@ -1,8 +1,8 @@
 // Login / Register page (/login) - guest only.
 //
-// Phase 0: full UI with a register/login toggle. Submitting calls authService,
-// which currently throws "wired in Phase 2" - surfaced as an error toast. This
-// lets us demo the form + toast now and swap in real Supabase Auth in Phase 2.
+// One form serves both modes; `setMode` swaps the copy and reveals the name
+// field. Registering with email confirmation on returns the user here in login
+// mode with a "check your email" toast rather than logging them straight in.
 
 import { html } from '../utils/dom.js';
 import { showToast } from '../components/toast.js';
@@ -55,9 +55,8 @@ export default async function render() {
   const nameGroup = node.querySelector('#name-group');
   const submitBtn = node.querySelector('#submit-btn');
 
-  node.querySelector('#toggle-mode').addEventListener('click', (e) => {
-    e.preventDefault();
-    mode = mode === 'login' ? 'register' : 'login';
+  function setMode(next) {
+    mode = next;
     const isRegister = mode === 'register';
     nameGroup.classList.toggle('d-none', !isRegister);
     node.querySelector('#auth-title').textContent = isRegister ? 'Create your account' : 'Welcome back';
@@ -67,6 +66,11 @@ export default async function render() {
     submitBtn.querySelector('span').textContent = isRegister ? 'Create account' : 'Log in';
     node.querySelector('#toggle-text').textContent = isRegister ? 'Already have an account?' : 'New to LeaveHub?';
     node.querySelector('#toggle-mode').textContent = isRegister ? 'Log in' : 'Create an account';
+  }
+
+  node.querySelector('#toggle-mode').addEventListener('click', (e) => {
+    e.preventDefault();
+    setMode(mode === 'login' ? 'register' : 'login');
   });
 
   form.addEventListener('submit', async (e) => {
@@ -81,8 +85,17 @@ export default async function render() {
 
     submitBtn.disabled = true;
     try {
-      if (mode === 'register') await register({ email, password, fullName });
-      else await login({ email, password });
+      if (mode === 'register') {
+        const { needsConfirmation } = await register({ email, password, fullName });
+        if (needsConfirmation) {
+          showToast('Account created. Check your email for a confirmation link, then log in.', 'success');
+          form.reset();
+          form.classList.remove('was-validated');
+          setMode('login');
+        }
+      } else {
+        await login({ email, password });
+      }
     } catch (err) {
       showToast(err.message || 'Authentication failed', 'error');
     } finally {
