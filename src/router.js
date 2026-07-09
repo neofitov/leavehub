@@ -29,7 +29,7 @@ function compile(pattern) {
   const keys = [];
   const source = pattern
     .replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // escape regex specials in literals
-    .replace(/\\:([A-Za-z0-9_]+)/g, (_, key) => {
+    .replace(/:([A-Za-z0-9_]+)/g, (_, key) => {
       keys.push(key);
       return '([^/]+)';
     });
