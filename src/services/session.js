@@ -1,11 +1,12 @@
 // Central place for the current authenticated user + role.
 //
-// Phase 0: this is an in-memory stub so routing/guards can be built and tested
-// without a backend. Phase 1 replaces the internals with real Supabase Auth
-// session + the user's role from the `user_roles` table, but the public API
-// (getCurrentUser / isAdmin / subscribe) stays the same so pages don't change.
+// Holds the in-memory view of who is logged in. authService owns the writes:
+// it resolves the Supabase Auth user plus the `user_roles` row into the shape
+// below and calls setCurrentUser(). Pages read it through getCurrentUser() /
+// isAdmin(), and the header re-renders off subscribe().
 
-let currentUser = null; // { id, email, fullName, role }
+// { id, email, fullName, avatarUrl, department, annualAllowance, role }
+let currentUser = null;
 const listeners = new Set();
 
 export function getCurrentUser() {

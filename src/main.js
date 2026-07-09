@@ -26,7 +26,9 @@ function mountShell() {
 
 async function bootstrapApp() {
   mountShell();
-  await restoreSession(); // no-op until Phase 2
+  // Must finish before the router runs, or auth guards would see no user and
+  // bounce a signed-in visitor to /login on every hard refresh.
+  await restoreSession();
   startRouter();
 }
 
