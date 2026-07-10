@@ -33,6 +33,7 @@ export default async function render() {
                 <div class="mb-3">
                   <label class="form-label" for="password">Password</label>
                   <input class="form-control" id="password" type="password" autocomplete="current-password" required minlength="6" />
+                  <div class="invalid-feedback">Password must be at least 6 characters.</div>
                 </div>
                 <button class="btn btn-primary w-100" type="submit" id="submit-btn">
                   <i class="bi bi-box-arrow-in-right me-1"></i><span>Log in</span>
@@ -53,12 +54,20 @@ export default async function render() {
   let mode = 'login'; // 'login' | 'register'
   const form = node.querySelector('#auth-form');
   const nameGroup = node.querySelector('#name-group');
+  const nameInput = node.querySelector('#fullName');
+  const passwordInput = node.querySelector('#password');
   const submitBtn = node.querySelector('#submit-btn');
+  const submitIcon = submitBtn.querySelector('i');
 
   function setMode(next) {
     mode = next;
     const isRegister = mode === 'register';
     nameGroup.classList.toggle('d-none', !isRegister);
+    // Only require (and validate) the name field while it's visible.
+    nameInput.required = isRegister;
+    // Browsers/password managers offer the right credential for the mode.
+    passwordInput.autocomplete = isRegister ? 'new-password' : 'current-password';
+    submitIcon.className = isRegister ? 'bi bi-person-plus me-1' : 'bi bi-box-arrow-in-right me-1';
     node.querySelector('#auth-title').textContent = isRegister ? 'Create your account' : 'Welcome back';
     node.querySelector('#auth-subtitle').textContent = isRegister
       ? 'Sign up to start tracking your time off'
