@@ -7,7 +7,7 @@ or reject requests and manage the team.
 Built for the SoftUni **Software Technologies with AI** capstone project using
 AI-assisted development.
 
-- **Live app:** _(deployed on Vercel — see Deployment)_
+- **Live app:** https://leavehub-delta.vercel.app
 - **Repository:** https://github.com/neofitov/leavehub
 
 ## Demo credentials
