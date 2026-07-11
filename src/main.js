@@ -17,8 +17,9 @@ function mountShell() {
   const app = document.getElementById('app');
   app.innerHTML = `
     <div class="d-flex flex-column min-vh-100">
+      <a href="#app-content" class="visually-hidden-focusable position-absolute top-0 start-0 m-2 btn btn-primary btn-sm">Skip to main content</a>
       <header id="app-header"></header>
-      <main id="app-content" class="flex-grow-1"></main>
+      <main id="app-content" class="flex-grow-1" tabindex="-1"></main>
       <footer id="app-footer"></footer>
     </div>`;
   renderFooter(document.getElementById('app-footer'));
