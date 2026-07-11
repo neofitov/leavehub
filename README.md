@@ -42,6 +42,18 @@ doesn't consume the paid allowance.
 
 ---
 
+## Screenshots
+
+**Employee dashboard** — remaining allowance, days used, pending days, and recent requests.
+
+![LeaveHub dashboard](docs/screenshots/dashboard.png)
+
+**Admin panel** — review every request and approve or reject pending ones.
+
+![LeaveHub admin panel](docs/screenshots/admin-panel.png)
+
+---
+
 ## Architecture
 
 ```
@@ -252,6 +264,7 @@ timeoff-tracker/
 ├─ vercel.json                     # SPA rewrites so deep links resolve
 ├─ .env.example                    # template for local secrets
 ├─ .github/copilot-instructions.md # instructions for the AI dev agent
+├─ docs/screenshots/               # images used in this README
 ├─ supabase/migrations/            # SQL schema history (source of truth)
 ├─ scripts/
 │  ├─ seed.js                      # demo users + sample data (secret key)
